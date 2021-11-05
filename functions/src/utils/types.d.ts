@@ -22,3 +22,8 @@ export interface PaymentDoc {
   callbackUrl?: string;
   time?: Date;
 }
+
+export interface WebHookData {
+  event: string;
+  transactionId: string;
+}

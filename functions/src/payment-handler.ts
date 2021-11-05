@@ -3,7 +3,7 @@ import { checkTx, sendTx } from "./utils/reef";
 import { PaymentDoc } from "./utils/types";
 import { callWebHook, refund } from "./utils/payment";
 
-// When a new payment request is made checkTx
+// When a new payment request is made calls checkTx
 export default functions.firestore
   .document("/paymentRequest/{documentId}")
   .onCreate(async (snap, context) => {
@@ -13,9 +13,14 @@ export default functions.firestore
   });
 
 const paid = async (doc: PaymentDoc) => {
-  const { callbackUrl, mnemonic, address, amount } = doc;
+  const { callbackUrl, mnemonic, address, amount, transactionId } = doc;
 
-  callWebHook(callbackUrl!, "payment.paid.success");
+  const data = {
+    event: "payment.paid.success",
+    transactionId: transactionId!,
+  };
+
+  callWebHook(callbackUrl!, data);
 
   // TODO: recursively call transfer to merchants address
   sendTx(mnemonic!, address!, amount!)
