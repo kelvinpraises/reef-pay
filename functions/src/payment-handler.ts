@@ -18,6 +18,7 @@ const paid = async (doc: PaymentDoc) => {
   const data = {
     event: "payment.paid.success",
     transactionId: transactionId!,
+    amount: amount!,
   };
 
   callWebHook(callbackUrl!, data);
@@ -30,22 +31,24 @@ const paid = async (doc: PaymentDoc) => {
 };
 
 const unpaid = async (doc: PaymentDoc) => {
-  const { callbackUrl, transactionId } = doc;
+  const { callbackUrl, transactionId, amount } = doc;
 
   const data = {
     event: "payment.unpaid.failed",
     transactionId: transactionId!,
+    amount: amount!,
   };
 
   callWebHook(callbackUrl!, data);
 };
 
 const underPaid = async (doc: PaymentDoc) => {
-  const { callbackUrl, transactionId } = doc;
+  const { callbackUrl, transactionId, amount } = doc;
 
   const data = {
     event: "payment.underpaid.failed",
     transactionId: transactionId!,
+    amount: amount!,
   };
 
   callWebHook(callbackUrl!, data);
@@ -56,11 +59,12 @@ const underPaid = async (doc: PaymentDoc) => {
 };
 
 const overPaid = async (doc: PaymentDoc) => {
-  const { callbackUrl, mnemonic, address, amount, transactionId } = doc;
+  const { callbackUrl, mnemonic, address, transactionId, amount } = doc;
 
   const data = {
     event: "payment.overpaid.success",
     transactionId: transactionId!,
+    amount: amount!,
   };
 
   callWebHook(callbackUrl!, data);
