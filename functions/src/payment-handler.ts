@@ -22,7 +22,8 @@ const paid = async (doc: PaymentDoc) => {
 
   callWebHook(callbackUrl!, data);
 
-  // TODO: recursively call transfer to merchants address
+  // TODO: Recursively call transfer to merchants address twice then call manual review
+  // TODO: Call manual review with doc details
   sendTx(mnemonic!, address!, amount!)
     .catch(console.error)
     .finally(() => process.exit());
