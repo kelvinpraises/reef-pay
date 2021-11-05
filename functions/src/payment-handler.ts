@@ -50,9 +50,9 @@ const underPaid = async (doc: PaymentDoc) => {
 
   callWebHook(callbackUrl!, data);
 
-  const refumdAddress = "";
+  const refundAddress = "";
   const refundAmount = "";
-  refund(refumdAddress, refundAmount);
+  refund(refundAddress, refundAmount);
 };
 
 const overPaid = async (doc: PaymentDoc) => {
@@ -70,7 +70,7 @@ const overPaid = async (doc: PaymentDoc) => {
     .catch(console.error)
     .finally(() => process.exit());
 
-  const refumdAddress = "";
+  const refundAddress = "";
   const refundAmount = "";
-  refund(refumdAddress, refundAmount);
+  refund(refundAddress, refundAmount);
 };
