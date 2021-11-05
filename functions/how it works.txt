@@ -1,0 +1,58 @@
+Flow
+
+User needs to pay with reef token 
+Merchant looks for a reef payment provider and selects Us
+Merchant registers with Us TODO: Sign up with email
+We save Merchant in a database TODO: Create Database
+We collect Merchant public key TODO: Save Merchant Public Key
+The Merchant drafts and sends price with callback url to Our API TODO: API to handle calls
+API sends a response with the Payment Url TODO: Create a payment url with random UID
+The Merchant then sends the User to our site TODO: Redirect User
+When link is clicked a new wallet address is generated TODO: Generate address and store in database
+The new wallet lasts for 15mins and the url is invalid after that TODO: Invalidate wallet And url And call callback with no pay faliure And redirect with to faliure route
+
+Warn User not to under pay or over pay and also make a one time payment TODO: Create a Modal with warning also 
+Note any money sent after the time within 24 hours would be refunded to the public address that sent it
+
+We show the User the generated page with address TODO: Create payment page
+If User UNDER pays than specified we refund with service chargesTODO: refund And call callback with under pay faliure And redirect with to faliure route
+If User OVER pays than specified we refund with service charges IF refund is less than service charge no refund TODO: refund excess And call callback with pay success And redirect with to success route
+When user pays correct amount the user is redirected to set url TODO: call callback with pay success And redirect to success route
+
+WHAT BACKEND DOES
+1. Create apikey for Merchant
+
+2. Has API to make payment
+
+API call is json
+    header: apikey: string,
+{
+    amount: double,
+    
+    success_url: "https://www.example.com/success", // TODO:
+    cancel_url: "https://www.example.com/cancel", // TODO:
+    
+    callbackUrl: string,
+
+    meta: {
+      name: string
+      email: email,
+    },
+}
+
+TODO: Document is deleted after 1 day, any deposit is refunded
+{
+  id: string // merchantId hidden from view
+  paymentId: string
+  paid: false
+  amount: string
+  meta: {
+    name: string
+    email: email,
+  }
+  publicKey: string
+  successUrl: string
+  cancelUrl: string
+  timestamp: date
+}
+
