@@ -36,10 +36,8 @@ export async function sendTx(
   const provider = new WsProvider("wss://rpc-testnet.reefscan.com/ws");
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
-
   const keyring = new Keyring({ type: "sr25519" });
   const sender = keyring.addFromUri(mnemonic);
-
   await api.tx.balances.transfer(address, amount).signAndSend(sender);
 }
 

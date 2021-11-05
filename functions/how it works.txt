@@ -22,7 +22,7 @@ When user pays correct amount the user is redirected to set url TODO: call callb
 WHAT BACKEND DOES
 1. Create apikey for Merchant
 
-2. Has API to make payment
+2. Has API to make payments
 
 API call is json
     header: apikey: string,
