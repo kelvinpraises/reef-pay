@@ -1,5 +1,6 @@
 import functions = require("firebase-functions");
 import { checkTx, sendTx } from "./utils/reef";
+import { PaymentDoc } from "./utils/types";
 
 // When a new payment request is made checkTx
 export default functions.firestore
@@ -10,59 +11,46 @@ export default functions.firestore
     const amount = 4;
     const time = new Date();
 
-    const data = { merchantId, address, amount, time };
+    const doc = { merchantId, address, amount, time };
 
-    await checkTx(data, paid, unpaid, underPaid, overPaid);
+    await checkTx(doc, paid, unpaid, underPaid, overPaid);
   });
 
-const paid = async (
-  merchantd: string,
-  mnemonic: string,
-  address: string,
-  amount: string
-) => {
+const paid = async (doc: PaymentDoc) => {
   console.log("paid");
+
+  const { merchantId, mnemonic, address, amount } = doc;
+
   // TODO: call webhook with success
 
   // TODO: recursively call transfer to merchants addrees
-  sendTx(mnemonic, address, amount)
+  sendTx(mnemonic!, address!, amount!)
     .catch(console.error)
     .finally(() => process.exit());
 };
 
-const unpaid = async (
-  merchantId: string,
-  mnemonic: string,
-  address: string,
-  amount: string
-) => {
+const unpaid = async (doc: PaymentDoc) => {
   console.log("unpaid");
   // TODO: call webhook with unpaid and failed
 };
 
-const underPaid = async (
-  merchantId: string,
-  mnemonic: string,
-  address: string,
-  amount: string
-) => {
+const underPaid = async (doc: PaymentDoc) => {
   console.log("under paid");
+
   // TODO: call webhook with underpaid and failed
 
   // TODO: call refund
 };
 
-const overPaid = async (
-  merchantId: string,
-  mnemonic: string,
-  address: string,
-  amount: string
-) => {
+const overPaid = async (doc: PaymentDoc) => {
   console.log("over paid");
+
+  const { merchantId, mnemonic, address, amount } = doc;
+
   // TODO: call webhook with success
 
   // TODO: recursively call transfer to merchants address
-  sendTx(mnemonic, address, amount)
+  sendTx(mnemonic!, address!, amount!)
     .catch(console.error)
     .finally(() => process.exit());
 

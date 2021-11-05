@@ -22,14 +22,23 @@ export async function checkUniqueMnemonic(mnemonic: string) {
 // Creates a payment url saves to the database
 export async function createPaymentDetail(
   keyPair: KeyringPair,
+  mnemonic: string,
   merchantId: string,
   body: PaymentRequest
 ) {
-  const saves = {
-    url: "",
-    merchantId: "",
+  const { amount, successUrl, cancelUrl, callbackUrl } = body;
+
+  const doc = {
+    merchantId,
+    transactionId: "",
+    mnemonic, //TODO: hide this in the database from client and encrypt
     address: "",
-    amount: "",
+    url: "",
+    amount,
+    time: "",
+    successUrl,
+    cancelUrl,
+    callbackUrl,
   };
   const data: PaymentResponse = { url: "url", transactionId: "33455" };
   const saved = true;

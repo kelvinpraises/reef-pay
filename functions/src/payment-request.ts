@@ -32,10 +32,14 @@ app.post("/payment-request", async (req, res) => {
 
     if (!exists) res.sendStatus(400);
 
-    const keyPair = await generateKeyPair();
+    const generated = await generateKeyPair();
+    const { keyPair, mnemonic } = generated!;
+
     const body = req.body as PaymentRequest;
+    
     const { saved, data } = await createPaymentDetail(
-      keyPair!,
+      keyPair,
+      mnemonic,
       merchantId,
       body
     );

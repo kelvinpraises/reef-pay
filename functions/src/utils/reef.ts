@@ -3,7 +3,7 @@ import { WsProvider } from "@polkadot/rpc-provider";
 import { options } from "@reef-defi/api";
 import bip39 = require("bip39");
 import { checkUniqueMnemonic } from "./firebase";
-import { TXBalance } from "./types";
+import { PaymentDoc } from "./types";
 
 // Generates the key pair
 export async function generateKeyPair() {
@@ -13,7 +13,7 @@ export async function generateKeyPair() {
 
   const mnemonic = bip39.generateMnemonic();
   const keyring = new Keyring();
-  const newPair = keyring.addFromUri(mnemonic);
+  const keyPair = keyring.addFromUri(mnemonic);
 
   // TODO: Hash the mnemonic string and check for the hash here
   // Ensures key pair is unique in Database
@@ -22,7 +22,7 @@ export async function generateKeyPair() {
   if (!isNew) {
     generateKeyPair();
   } else {
-    return newPair;
+    return { keyPair, mnemonic };
   }
 }
 
@@ -30,7 +30,7 @@ export async function generateKeyPair() {
 export async function sendTx(
   mnemonic: string,
   address: string,
-  amount: string
+  amount: number
 ) {
   const provider = new WsProvider("wss://rpc-testnet.reefscan.com/ws");
   const api = new ApiPromise(options({ provider }));
@@ -44,7 +44,7 @@ export async function sendTx(
 
 // Subscribe to balance changes for our account
 export async function checkTx(
-  data: TXBalance,
+  doc: PaymentDoc,
   paid: Function,
   unpaid: Function,
   underPaid: Function,
@@ -54,10 +54,10 @@ export async function checkTx(
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
 
-  const { merchantId, address, amount, time } = data;
+  const { merchantId, address, amount, time } = doc;
 
   const unsub = await api.query.system.account(
-    address,
+    address!,
     async ({
       data: { free: currentFree, reserved: currentReserved },
       nonce: currentNonce,
@@ -66,22 +66,22 @@ export async function checkTx(
         `balance: ${currentFree} reserved: ${currentReserved} nonce: ${currentNonce}`
       );
       if ((currentFree as unknown as number) === amount) {
-        await paid();
+        await paid(doc);
         unsub();
-      } else if ((currentFree as unknown as number) > amount) {
-        await overPaid();
+      } else if ((currentFree as unknown as number) > amount!) {
+        await overPaid(doc);
         unsub();
       } else if (
         (currentFree as unknown as number) !== 0 &&
-        (currentFree as unknown as number) < amount
+        (currentFree as unknown as number) < amount!
       ) {
-        await underPaid();
+        await underPaid(doc);
         unsub();
       }
     }
   );
 
   // TODO: Check time
-  await unpaid();
+  await unpaid(doc);
   unsub();
 }

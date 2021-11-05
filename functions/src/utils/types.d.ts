@@ -1,7 +1,7 @@
 export interface PaymentRequest {
   amount: any;
-  success_url: string;
-  cancel_url: string;
+  successUrl: string;
+  cancelUrl: string;
   callbackUrl: string;
 }
 
@@ -10,9 +10,15 @@ export interface PaymentResponse {
   transactionId: string;
 }
 
-export interface TXBalance {
-  merchantId: string;
-  address: string;
-  amount: number;
-  time: Date;
+export interface PaymentDoc {
+  merchantId?: string;
+  transactionId?: string;
+  mnemonic?: string; //TODO: hide this in the database from client and encrypt
+  address?: string;
+  url?: string;
+  amount?: number;
+  successUrl?: string;
+  cancelUrl?: string;
+  callbackUrl?: string;
+  time?: Date;
 }
