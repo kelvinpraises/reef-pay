@@ -1,9 +1,10 @@
 import { ApiPromise, Keyring } from "@polkadot/api";
 import { WsProvider } from "@polkadot/rpc-provider";
 import { options } from "@reef-defi/api";
-import bip39 = require("bip39");
 import { checkUniqueMnemonic } from "./firebase";
 import { PaymentDoc } from "./types";
+import bip39 = require("bip39");
+import functions = require("firebase-functions");
 
 // Generates the key pair
 export async function generateKeyPair() {
@@ -62,19 +63,18 @@ export async function checkTx(
       data: { free: currentFree, reserved: currentReserved },
       nonce: currentNonce,
     }) => {
-      console.log(
-        `balance: ${currentFree} reserved: ${currentReserved} nonce: ${currentNonce}`
-      );
-      if ((currentFree as unknown as number) === amount) {
+      const message = `balance: ${currentFree} reserved: ${currentReserved} nonce: ${currentNonce}`;
+      functions.logger.info(message); // TODO: Remove in Prod
+
+      const currentBalance = currentFree as unknown as number;
+
+      if (currentBalance === amount) {
         await paid(doc);
         unsub();
-      } else if ((currentFree as unknown as number) > amount!) {
+      } else if (currentBalance > amount!) {
         await overPaid(doc);
         unsub();
-      } else if (
-        (currentFree as unknown as number) !== 0 &&
-        (currentFree as unknown as number) < amount!
-      ) {
+      } else if (currentBalance !== 0 && currentBalance < amount!) {
         await underPaid(doc);
         unsub();
       }

@@ -1,27 +1,20 @@
 import functions = require("firebase-functions");
 import { checkTx, sendTx } from "./utils/reef";
 import { PaymentDoc } from "./utils/types";
+import { callWebHook } from "./utils/payment";
 
 // When a new payment request is made checkTx
 export default functions.firestore
   .document("/paymentRequest/{documentId}")
   .onCreate(async (snap, context) => {
-    const merchantId = "";
-    const address = "";
-    const amount = 4;
-    const time = new Date();
-
-    const doc = { merchantId, address, amount, time };
-
+    const doc = snap.data() as PaymentDoc;
     await checkTx(doc, paid, unpaid, underPaid, overPaid);
   });
 
 const paid = async (doc: PaymentDoc) => {
-  console.log("paid");
+  const { callbackUrl, mnemonic, address, amount } = doc;
 
-  const { merchantId, mnemonic, address, amount } = doc;
-
-  // TODO: call webhook with success
+  callWebHook(callbackUrl!, "payment.paid.success");
 
   // TODO: recursively call transfer to merchants addrees
   sendTx(mnemonic!, address!, amount!)
@@ -30,24 +23,23 @@ const paid = async (doc: PaymentDoc) => {
 };
 
 const unpaid = async (doc: PaymentDoc) => {
-  console.log("unpaid");
-  // TODO: call webhook with unpaid and failed
+  const { callbackUrl } = doc;
+
+  callWebHook(callbackUrl!, "payment.unpaid.failed");
 };
 
 const underPaid = async (doc: PaymentDoc) => {
-  console.log("under paid");
+  const { callbackUrl } = doc;
 
-  // TODO: call webhook with underpaid and failed
+  callWebHook(callbackUrl!, "payment.underpaid.failed");
 
   // TODO: call refund
 };
 
 const overPaid = async (doc: PaymentDoc) => {
-  console.log("over paid");
+  const { callbackUrl, mnemonic, address, amount } = doc;
 
-  const { merchantId, mnemonic, address, amount } = doc;
-
-  // TODO: call webhook with success
+  callWebHook(callbackUrl!, "payment.overpaid.success");
 
   // TODO: recursively call transfer to merchants address
   sendTx(mnemonic!, address!, amount!)
@@ -78,3 +70,16 @@ const overPaid = async (doc: PaymentDoc) => {
 // // writing to Firestore.
 // // Setting an 'uppercase' field in Firestore document returns a Promise.
 // return snap.ref.set({ uppercase }, { merge: true });
+//
+//
+//
+//
+//
+//
+//
+// const merchantId = "";
+// const address = "";
+// const amount = 4;
+// const time = new Date();
+
+// const doc = { merchantId, address, amount, time };

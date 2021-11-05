@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 
 app.post("/payment-request", async (req, res) => {
   const apiKey = req.get("X-API-KEY");
-  functions.logger.info(apiKey);
+  functions.logger.info(apiKey); // TODO: Remove in Prod
 
   if (!apiKey) {
     res.sendStatus(400);
@@ -36,7 +36,7 @@ app.post("/payment-request", async (req, res) => {
     const { keyPair, mnemonic } = generated!;
 
     const body = req.body as PaymentRequest;
-    
+
     const { saved, data } = await createPaymentDetail(
       keyPair,
       mnemonic,
