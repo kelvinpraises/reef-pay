@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { generateAPIKey } from "../utils/crypto";
+import { generateAPIKey } from "../utility/crypto";
 
 const db = admin.firestore();
 

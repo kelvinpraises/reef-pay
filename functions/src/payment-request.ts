@@ -1,7 +1,7 @@
-import { createPaymentDetail, getMerchant } from "./utils/firebase";
-import { handleError } from "./utils/middleware";
-import { generateKeyPair } from "./utils/reef";
-import { PaymentRequest } from "./utils/types";
+import { createPaymentDetail, getMerchant } from "./utility/firebase";
+import { handleError } from "./utility/middleware";
+import { generateKeyPair } from "./utility/reef";
+import { PaymentRequest } from "./utility/types";
 import cors = require("cors");
 import express = require("express");
 import functions = require("firebase-functions");
