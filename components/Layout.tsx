@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { almostBlack, darkBlue } from "../constant/colors";
 import CloseSideBarButton from "./CloseSideBarMenu";
+import LogOut from "./Logout";
 import NavItem from "./NavItem";
 import SideBarMenu from "./SideBarMenu";
 
@@ -67,7 +68,7 @@ const SLogo = styled.div`
 `;
 
 const SNavBar = styled.header`
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: ${navbar_height};
   padding: 0px;
@@ -91,6 +92,9 @@ const SNavBar = styled.header`
 
 const SNavBarActions = styled.div`
   display: flex;
+  width: 100%;
+  align-items: center;
+  height: 100%;
 
   @media only screen and (max-width: 950px) {
     display: none;
@@ -102,6 +106,36 @@ const SButton = styled.button`
 
   @media only screen and (max-width: 950px) {
     display: none;
+  }
+`;
+
+const SPageName = styled.div`
+  color: white;
+  margin: 0 0 0 2em;
+  font-size: 30px;
+  font-weight: 500;
+`;
+
+const SDisplayName = styled.div`
+  color: white;
+  font-size: 18px;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const SProfileActions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: white;
+  margin: 0 2em 0 0;
+  font-size: 18px;
+  height: 100%;
+
+  &:hover ${SDisplayName} {
+    background-color: ${darkBlue};
   }
 `;
 
@@ -123,19 +157,42 @@ export default function Layout({ children }: { children: any }) {
 
   const childElement = useRef<HTMLDivElement | null>(null);
 
-  const [state, setName] = useState("null");
+  const [name, setName] = useState("null");
+
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const topPos = childElement.current as HTMLElement;
     topPos.scrollIntoView();
-  });
+  }, [router]);
+
+  useEffect(() => {
+    const split = router.pathname.split("/")[1];
+
+    switch (split) {
+      case "overview":
+        setName("Overview");
+        break;
+      case "transactions":
+        setName("Transactions");
+        break;
+      case "settings":
+        setName("Settings");
+        break;
+      case "documentation":
+        setName("API Doc");
+        break;
+
+      default:
+        break;
+    }
+  }, [router]);
 
   const setActive = useCallback(
-    (name: string) => {
-      console.log(name);
-      return name === state ? true : false;
+    (iconName: string) => {
+      return iconName === name ? true : false;
     },
-    [state]
+    [name, router]
   );
 
   return (
@@ -183,7 +240,24 @@ export default function Layout({ children }: { children: any }) {
       <SMain>
         <>
           <SNavBar>
-            <SNavBarActions></SNavBarActions>
+            <SNavBarActions>
+              <SPageName>{name}</SPageName>
+              <div style={{ flexGrow: 1 }}></div>
+              <SProfileActions
+                onClick={() => {
+                  setShow(!show);
+                }}
+                onMouseOver={() => {
+                  setShow(true);
+                }}
+                onMouseLeave={() => {
+                  setShow(false);
+                }}
+              >
+                <SDisplayName>kelvinpraises</SDisplayName>
+                <LogOut show={show} />
+              </SProfileActions>
+            </SNavBarActions>
 
             <SideBarMenu />
           </SNavBar>

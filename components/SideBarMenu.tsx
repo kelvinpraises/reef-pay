@@ -2,6 +2,8 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 
 const SDiv = styled.div`
+  display: none;
+
   @media only screen and (max-width: 950px) {
     display: block;
   }

@@ -24,7 +24,7 @@ const SNavItem = styled.div<ISNavItem>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin: 1em 1em;
+  margin: 0.7em 1em;
   padding: 1em;
   border-radius: 7.8px;
 
@@ -36,9 +36,9 @@ const SNavItem = styled.div<ISNavItem>`
     transition: none !important;
   }
 
-  /* &:hover {
-    background-color: white;
-  } */
+  &:hover {
+    background-color: grey;
+  }
 
   ${({ active }) =>
     active &&

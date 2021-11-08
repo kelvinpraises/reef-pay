@@ -1,8 +1,7 @@
 import React from "react";
-import { RiCloseLine } from "react-icons/ri";
+// import { RiCloseLine } from "react-icons/ri";
 import styled from "styled-components";
-import { secondary_deep_color_100, secondary_deep_color_400 } from "../../constants";
-import Card from "../Card";
+import { almostBlack } from "../../constant/colors";
 
 interface IModal {
   show: boolean;
@@ -23,8 +22,8 @@ const Modal = styled.div`
   justify-content: center;
 `;
 
-const ModalContent = styled(Card)`
-  width: 500px;
+const ModalContent = styled.div`
+  max-width: 500px;
 `;
 
 const ModalHeader = styled.div`
@@ -48,7 +47,7 @@ const SClose = styled.div`
   place-items: center;
 
   :hover {
-    background-color: ${secondary_deep_color_400};
+    background-color: ${almostBlack};
     border-radius: 50%;
     min-width: 50px;
     min-height: 50px;
@@ -63,16 +62,10 @@ export default function BaseModal({ show, setShow, title, children }: IModal) {
   return (
     <Modal onClick={() => setShow(!show)}>
       <div onClick={(e) => e.stopPropagation()}>
-        <ModalContent hover={false}>
+        <ModalContent>
           <ModalHeader>
             <ModalTitle>{title}</ModalTitle>
-            <SClose>
-              <RiCloseLine
-                style={{ fill: "#8ca1ad" }}
-                onClick={() => setShow(!show)}
-                size="32"
-              />
-            </SClose>
+            <SClose onClick={() => setShow(!show)}>close</SClose>
           </ModalHeader>
           <ModalBody>{children}</ModalBody>
         </ModalContent>
