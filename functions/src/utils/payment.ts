@@ -2,13 +2,13 @@ import * as https from "https";
 import { WebHookData } from "./types";
 
 export async function callWebHook(callbackUrl: string, data: WebHookData) {
-  const { transactionId, event } = data;
+  const { transactionId, event, amount } = data;
   const { hostname, pathname } = new URL(callbackUrl);
 
   const postData = JSON.stringify({
     data: {
       id: transactionId,
-      amount: 1000,
+      amount,
       created: Date.now(),
     },
     type: event,

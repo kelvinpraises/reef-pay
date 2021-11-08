@@ -20,10 +20,11 @@ export interface PaymentDoc {
   successUrl?: string;
   cancelUrl?: string;
   callbackUrl?: string;
-  time?: Date;
+  createdAt?: any;
 }
 
 export interface WebHookData {
   event: string;
   transactionId: string;
+  amount: number;
 }

@@ -21,7 +21,7 @@ const paid = async (doc: PaymentDoc) => {
     amount: amount!,
   };
 
-  callWebHook(callbackUrl!, data);
+  await callWebHook(callbackUrl!, data);
 
   // TODO: Recursively call transfer to merchants address twice then call manual review
   // TODO: Call manual review with doc details
@@ -39,7 +39,7 @@ const unpaid = async (doc: PaymentDoc) => {
     amount: amount!,
   };
 
-  callWebHook(callbackUrl!, data);
+  await callWebHook(callbackUrl!, data);
 };
 
 const underPaid = async (doc: PaymentDoc) => {
@@ -51,7 +51,7 @@ const underPaid = async (doc: PaymentDoc) => {
     amount: amount!,
   };
 
-  callWebHook(callbackUrl!, data);
+  await callWebHook(callbackUrl!, data);
 
   const refundAddress = "";
   const refundAmount = "";
@@ -67,7 +67,7 @@ const overPaid = async (doc: PaymentDoc) => {
     amount: amount!,
   };
 
-  callWebHook(callbackUrl!, data);
+  await callWebHook(callbackUrl!, data);
 
   // TODO: recursively call transfer to merchants address
   sendTx(mnemonic!, address!, amount!)

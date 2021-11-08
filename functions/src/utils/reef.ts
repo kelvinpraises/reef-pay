@@ -16,7 +16,9 @@ export async function generateKeyPair() {
   const keyring = new Keyring();
   const keyPair = keyring.addFromUri(mnemonic);
 
-  // TODO: Hash the mnemonic string and check for the hash here
+  console.log(mnemonic);
+
+  // TODO: Hash the mnemonic string and check for the hash hereR
   // Ensures key pair is unique in Database
   const isNew = await checkUniqueMnemonic(mnemonic);
 
@@ -53,7 +55,7 @@ export async function checkTx(
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
 
-  const { merchantId, address, amount, time } = doc;
+  const { address, amount } = doc;
 
   const unsub = await api.query.system.account(
     address!,
@@ -64,22 +66,28 @@ export async function checkTx(
       const message = `balance: ${currentFree} reserved: ${currentReserved} nonce: ${currentNonce}`;
       functions.logger.info(message); // TODO: Remove in Prod
 
-      const currentBalance = currentFree as unknown as number;
+      let currentBalance = currentFree as unknown as number;
+      currentBalance = currentBalance / 1000000000000000000;
 
-      if (currentBalance === amount) {
+      functions.logger.info(currentBalance); // TODO: Remove in Prod
+      functions.logger.info(amount); // TODO: Remove in Prod
+
+      if (currentBalance == amount!) {
         await paid(doc);
         unsub();
       } else if (currentBalance > amount!) {
         await overPaid(doc);
         unsub();
-      } else if (currentBalance !== 0 && currentBalance < amount!) {
+      } else if (currentBalance > 0 && currentBalance < amount!) {
         await underPaid(doc);
         unsub();
       }
     }
   );
 
-  // TODO: Check time
-  await unpaid(doc);
-  unsub();
+  // A 15 minute count down timer that calls unpaid
+  setTimeout(async () => {
+    await unpaid(doc);
+    unsub();
+  }, 900000);
 }

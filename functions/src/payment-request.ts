@@ -12,8 +12,8 @@ import apicache = require("apicache");
 // const hashedAPIKey = hashAPIKey(apiKey);
 
 const app = express();
-
-app.use(apicache.middleware("30 minutes"));
+// Uncomment to use cache.
+// app.use(apicache.middleware("30 minutes"));
 
 app.use(cors({ origin: true }));
 
@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 
 app.post("/payment-request", async (req, res) => {
   const apiKey = req.get("X-API-KEY");
-  functions.logger.info(apiKey); // TODO: Remove in Prod
 
   if (!apiKey) {
     res.sendStatus(400);
@@ -46,7 +45,7 @@ app.post("/payment-request", async (req, res) => {
 
     if (!saved) res.sendStatus(500);
 
-    res.send(data);
+    res.send({ data });
   }
 });
 
