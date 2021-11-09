@@ -1,4 +1,4 @@
-import functions = require("firebase-functions");
+import * as functions from "firebase-functions";
 import { checkTx, sendTx } from "./utility/reef";
 import { PaymentDoc } from "./utility/types";
 import { callWebHook, refund } from "./utility/payment";

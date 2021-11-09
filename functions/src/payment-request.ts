@@ -2,10 +2,10 @@ import { createPaymentDetail, getMerchant } from "./utility/firebase";
 import { handleError } from "./utility/middleware";
 import { generateKeyPair } from "./utility/reef";
 import { PaymentRequest } from "./utility/types";
-import cors = require("cors");
-import express = require("express");
-import functions = require("firebase-functions");
-import apicache = require("apicache");
+import * as cors from "cors";
+import * as express from "express";
+import * as functions from "firebase-functions";
+import * as apicache from "apicache";
 
 // TODO: use hashed API key and encrypted mnemonics in prod
 // import { hashAPIKey } from "./utils/crypto";

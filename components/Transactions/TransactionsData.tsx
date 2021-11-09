@@ -74,7 +74,7 @@ export default function TransactionsData({ transactions }: ITransactionsData) {
                 fontSize: "1.3rem",
               }}
             >
-              Your transactions show up when they're made
+              Your transactions show up when they&apos;re made
             </h5>
           </div>
         </SBox>
