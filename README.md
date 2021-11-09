@@ -2,7 +2,7 @@
 
 This is an open source payment service built on reef to make payments
 
-To view this go open [ https://reef-pay.web.app](https://reef-pay.web.app) with your browser to see the result.
+To view this project open [ https://reef-pay.web.app](https://reef-pay.web.app) with your browser to see the result.
 
 or run the development server:
 
