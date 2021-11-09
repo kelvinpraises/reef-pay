@@ -14,7 +14,7 @@ export interface PaymentDoc {
   merchantId?: string;
   transactionId?: string;
   mnemonic?: string; //TODO: hide this in the database from client and encrypt
-  address?: string;
+  walletAddress?: string;
   url?: string;
   amount?: number;
   successUrl?: string;

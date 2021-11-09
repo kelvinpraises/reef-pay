@@ -1,11 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/documentation": "pages/documentation.html",
-  "/": "pages/index.html",
-  "/overview": "pages/overview.html",
-  "/settings": "pages/settings.html",
-  "/transactions": "pages/transactions.html",
-  "/_error": "pages/_error.js",
-  "/404": "pages/404.html"
+  "/_error": "pages/_error.js"
 }

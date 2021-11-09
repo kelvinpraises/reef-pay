@@ -8,7 +8,7 @@ export default functions.https.onCall(async ({ walletAddress }, context) => {
   return db
     .collection("merchants")
     .doc(uid!)
-    .set({ walletAddress }, { merge: true })
+    .set({ walletAddress: walletAddress }, { merge: true })
     .catch((error) => {
       functions.logger.error(error);
     });

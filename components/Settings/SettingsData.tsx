@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
 import { Auth, getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, Firestore, getFirestore, onSnapshot } from "firebase/firestore";
-import app from "../../firebase/clientApp";
-
-import { grey } from "../../constant/colors";
-import Button from "../Button";
 import { Functions, getFunctions, httpsCallable } from "firebase/functions";
+import React, { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+import { grey } from "../../constant/colors";
+import app from "../../firebase/clientApp";
+import Button from "../Button";
 
 type NullString = string | null;
 
@@ -64,17 +63,13 @@ const SApiKeyGroup2 = styled.div`
 export default function SettingsData() {
   const [db, setDb] = useState<Firestore | null>(null);
   const [auth, setAuth] = useState<Auth | null>(null);
+  const [functions, setFunctions] = useState<Functions | null>(null);
 
   const [address, setAddress] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [show, setShow] = useState(false);
 
   const [uid, setUid] = useState<NullString>("");
-
-  const handleChange = (event: any) => {
-    let value = event.target.value;
-    setAddress(value);
-  };
 
   useEffect(() => {
     const db = getFirestore(app);
@@ -84,6 +79,11 @@ export default function SettingsData() {
   useEffect(() => {
     const auth = getAuth(app);
     auth && setAuth(auth);
+  }, []);
+
+  useEffect(() => {
+    const functions = getFunctions(app);
+    functions && setFunctions(functions);
   }, []);
 
   useEffect(() => {
@@ -99,23 +99,22 @@ export default function SettingsData() {
   useEffect(() => {
     if (db !== null && uid?.length! > 0) {
       const unsub = onSnapshot(doc(db, "merchants", uid!), (doc) => {
-        const walletAddress = doc?.data()?.walletAddress;
-        const apiKey = doc?.data()?.apiKey;
+        if (doc.exists()) {
+          const { walletAddress, apiKey } = doc.data();
 
-        setAddress(walletAddress);
-        setApiKey(apiKey);
+          setAddress(walletAddress);
+          setApiKey(apiKey);
+        }
       });
 
       return () => unsub();
     }
   }, [db, uid]);
 
-  const [functions, setFunctions] = useState<Functions | null>(null);
-
-  useEffect(() => {
-    const functions = getFunctions(app);
-    functions && setFunctions(functions);
-  }, []);
+  const handleChange = (event: any) => {
+    let value = event.target.value;
+    setAddress(value);
+  };
 
   const generateAPIKey = useCallback(() => {
     if (functions !== null) {
@@ -127,11 +126,11 @@ export default function SettingsData() {
 
   const saveWalletAddress = useCallback(() => {
     if (functions !== null) {
-      const saveWalletAdress = httpsCallable(functions, "saveWalletAdress");
+      const saveWalletAddress = httpsCallable(functions, "saveWalletAddress");
 
-      saveWalletAdress({ walletAddress: address });
+      saveWalletAddress({ walletAddress: address });
     }
-  }, [functions]);
+  }, [functions, address]);
 
   return (
     <div>

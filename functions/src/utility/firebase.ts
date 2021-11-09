@@ -44,7 +44,7 @@ export async function createPaymentDetail(
     merchantId,
     transactionId,
     mnemonic, //TODO: hide this in the database from client and encrypt
-    address: keyPair.address,
+    walletAddress: keyPair.address,
     url,
     amount,
     successUrl,

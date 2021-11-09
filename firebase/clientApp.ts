@@ -18,13 +18,13 @@ const app = initializeApp(clientCredentials);
 
 if (location.hostname === "localhost") {
   const auth = getAuth(app);
-  connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
+  connectAuthEmulator(auth, "http://localhost:9099", /* { disableWarnings: true } */);
 
   const functions = getFunctions(getApp());
   connectFunctionsEmulator(functions, "localhost", 5001);
 
   const db = getFirestore();
-  connectFirestoreEmulator(db, "localhost", 8080);
+  connectFirestoreEmulator(db, "localhost", 8081);
 }
 
 export default app;

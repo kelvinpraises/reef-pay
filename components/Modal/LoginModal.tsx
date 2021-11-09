@@ -102,10 +102,10 @@ export default function LoginModal({
     <BaseModal show={show} setShow={setShow} title="Deposit">
       <SLoginModal>
         <div style={{ maxWidth: 300 }}>
-          <Label1 htmlFor="address">Email Address</Label1>
+          <Label1 htmlFor="email">Email Address</Label1>
           <SInput
             type="text"
-            id="address"
+            id="email"
             onChange={(e) => onChange(e, "email")}
             value={email}
           />

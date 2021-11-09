@@ -1,7 +1,9 @@
+import { Auth, getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { almostBlack, darkBlue } from "../constant/colors";
+import app from "../firebase/clientApp";
 import CloseSideBarButton from "./CloseSideBarMenu";
 import LogOut from "./Logout";
 import NavItem from "./NavItem";
@@ -158,6 +160,7 @@ export default function Layout({ children }: { children: any }) {
   const childElement = useRef<HTMLDivElement | null>(null);
 
   const [name, setName] = useState("null");
+  const [displayName, setDisplayName] = useState("null");
 
   const [show, setShow] = useState(false);
 
@@ -182,6 +185,9 @@ export default function Layout({ children }: { children: any }) {
       case "documentation":
         setName("API Doc");
         break;
+      case "pay":
+        setName("Payment Request");
+        break;
 
       default:
         break;
@@ -194,6 +200,23 @@ export default function Layout({ children }: { children: any }) {
     },
     [name, router]
   );
+
+  const [auth, setAuth] = useState<Auth | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth(app);
+    auth && setAuth(auth);
+  }, []);
+
+  useEffect(() => {
+    if (auth !== null) {
+      onAuthStateChanged(auth, async (user) => {
+        if (user && user.displayName !== null) {
+          setDisplayName(user.displayName);
+        }
+      });
+    }
+  }, [auth]);
 
   return (
     <SLayout>
@@ -254,7 +277,7 @@ export default function Layout({ children }: { children: any }) {
                   setShow(false);
                 }}
               >
-                <SDisplayName>kelvinpraises</SDisplayName>
+                <SDisplayName>{displayName}</SDisplayName>
                 <LogOut show={show} />
               </SProfileActions>
             </SNavBarActions>

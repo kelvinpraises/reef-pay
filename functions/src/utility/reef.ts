@@ -55,10 +55,10 @@ export async function checkTx(
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
 
-  const { address, amount } = doc;
+  const { walletAddress, amount } = doc;
 
   const unsub = await api.query.system.account(
-    address!,
+    walletAddress!,
     async ({
       data: { free: currentFree, reserved: currentReserved },
       nonce: currentNonce,
