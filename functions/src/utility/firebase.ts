@@ -38,7 +38,7 @@ export async function createPaymentDetail(
   let saved;
   const { amount, successUrl, cancelUrl, callbackUrl } = body;
   const transactionId = uuidv1();
-  const url = "https://www.reef-pay.web.app/pay/" + transactionId;
+  const url = "https://reef-pay.web.app/pay/" + transactionId;
 
   const doc = {
     merchantId,

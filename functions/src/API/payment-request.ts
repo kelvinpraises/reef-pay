@@ -49,4 +49,7 @@ app.post("/payment-request", async (req, res) => {
   }
 });
 
-export default functions.https.onRequest(app);
+const main = express();
+main.use('/api', app);
+
+export default functions.https.onRequest(main);

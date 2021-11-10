@@ -2,6 +2,12 @@
 
 This is an open source payment service built on reef to make payments
 
+## Test Shop implementimg Reef Pay
+
+Open [http://reef-pay-shop.web.app](http://reef-pay-shop.web.app) with your browser to see the result.
+
+## Reef Pay Project
+
 To view this project open [ https://reef-pay.web.app](https://reef-pay.web.app) with your browser to see the result.
 
 or run the development server:

@@ -73,10 +73,6 @@ export default function SignupModal({
     auth && setAuth(auth);
   }, []);
 
-  useEffect(() => {
-    const auth = getAuth(app);
-    auth && setAuth(auth);
-  }, []);
 
   useEffect(() => {
     const db = getFirestore(app);
