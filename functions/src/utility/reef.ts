@@ -1,6 +1,7 @@
 import { ApiPromise, Keyring } from "@polkadot/api";
 import { WsProvider } from "@polkadot/rpc-provider";
 import { options } from "@reef-defi/api";
+import { overPaid, paid, underPaid, unpaid } from "../API/payment-handler";
 import { checkUniqueMnemonic, saveTx } from "./firebase";
 import { PaymentDoc } from "./types";
 import bip39 = require("bip39");
@@ -61,36 +62,30 @@ export async function checkTx(doc: PaymentDoc) {
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
 
-  let status = "";
-
   const { generatedWallet, amount } = doc;
 
   const unsub = await api.query.system.account(
     generatedWallet!,
-    ({
-      data: { free: currentFree, reserved: currentReserved },
-      nonce: currentNonce,
-    }) => {
+    async ({ data: { free: currentFree } }) => {
       let currentBalance = currentFree as unknown as number;
       currentBalance = currentBalance / 1000000000000000000;
 
       if (currentBalance == amount!) {
-        status = "paid";
+        await paid(doc);
+        unsub();
       } else if (currentBalance > amount!) {
-        status = "overpaid";
+        await overPaid(doc);
+        unsub();
       } else if (currentBalance > 0 && currentBalance < amount!) {
-        status = "underpaid";
+        await underPaid(doc);
+        unsub();
       }
     }
   );
 
   // A 5 minute count down timer that calls unpaid
-  setTimeout(() => {
-    status = "unpaid";
-  }, 300000);
-
-  if (status.length > 0) {
+  setTimeout(async () => {
+    await unpaid(doc);
     unsub();
-    return status;
-  }
+  }, 300000);
 }

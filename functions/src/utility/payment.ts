@@ -1,3 +1,4 @@
+import * as functions from "firebase-functions";
 import * as https from "https";
 import { WebHookData } from "./types";
 
@@ -5,16 +6,24 @@ export async function callWebHook(callbackUrl: string, data: WebHookData) {
   const { transactionId, event, amount } = data;
   const { hostname, pathname } = new URL(callbackUrl);
 
+  functions.logger.debug(
+    "weboook data: " + event + " " + amount + " " + transactionId
+  );
+
   const postData = JSON.stringify({
-    event,
-    transactionId,
-    amount,
+    event: event,
+    transactionId: transactionId,
+    amount: amount,
   });
 
   const options = {
     method: "POST",
     hostname: hostname,
     path: pathname,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    maxRedirects: 20,
   };
 
   await new Promise((resolve, reject) => {
