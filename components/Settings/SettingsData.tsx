@@ -100,9 +100,9 @@ export default function SettingsData() {
     if (db !== null && uid?.length! > 0) {
       const unsub = onSnapshot(doc(db, "merchants", uid!), (doc) => {
         if (doc.exists()) {
-          const { walletAddress, apiKey } = doc.data();
+          const { merchantWallet, apiKey } = doc.data();
 
-          setAddress(walletAddress);
+          setAddress(merchantWallet);
           setApiKey(apiKey);
         }
       });
@@ -128,7 +128,7 @@ export default function SettingsData() {
     if (functions !== null) {
       const saveWalletAddress = httpsCallable(functions, "saveWalletAddress");
 
-      saveWalletAddress({ walletAddress: address });
+      saveWalletAddress({ merchantWallet: address });
     }
   }, [functions, address]);
 

@@ -1,19 +1,18 @@
+import * as cors from "cors";
+import * as express from "express";
+import * as functions from "firebase-functions";
 import { createPaymentDetail, getMerchant } from "../utility/firebase";
 import { handleError } from "../utility/middleware";
 import { generateKeyPair } from "../utility/reef";
 import { PaymentRequest } from "../utility/types";
-import * as cors from "cors";
-import * as express from "express";
-import * as functions from "firebase-functions";
-import * as apicache from "apicache";
 
-// TODO: use hashed API key and encrypted mnemonics in prod
+// TODO: Uncomment to use cache, and hashed API key and encrypted mnemonics in prod.
 // import { hashAPIKey } from "./utils/crypto";
 // const hashedAPIKey = hashAPIKey(apiKey);
+// import * as apicache from "apicache";
+// app.use(apicache.middleware("30 minutes"));
 
 const app = express();
-// Uncomment to use cache.
-// app.use(apicache.middleware("30 minutes"));
 
 app.use(cors({ origin: true }));
 
@@ -27,7 +26,7 @@ app.post("/payment-request", async (req, res) => {
   if (!apiKey) {
     res.sendStatus(400);
   } else {
-    const { exists, merchantId } = await getMerchant(apiKey);
+    const { exists, merchantId, merchantWallet } = await getMerchant(apiKey);
 
     if (!exists) res.sendStatus(400);
 
@@ -39,7 +38,8 @@ app.post("/payment-request", async (req, res) => {
     const { saved, data } = await createPaymentDetail(
       keyPair,
       mnemonic,
-      merchantId,
+      merchantId!,
+      merchantWallet!,
       body
     );
 
@@ -50,6 +50,6 @@ app.post("/payment-request", async (req, res) => {
 });
 
 const main = express();
-main.use('/api', app);
+main.use("/api", app);
 
 export default functions.https.onRequest(main);

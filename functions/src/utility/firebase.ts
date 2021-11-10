@@ -1,7 +1,7 @@
 import { KeyringPair } from "@polkadot/keyring/types";
+import { v1 as uuidv1 } from "uuid";
 import { PaymentRequest, PaymentResponse } from "./types";
 import admin = require("firebase-admin");
-import { v1 as uuidv1 } from "uuid";
 import functions = require("firebase-functions");
 
 admin.initializeApp();
@@ -10,9 +10,23 @@ const db = admin.firestore();
 
 // Checks database to see if the merchant exists
 export async function getMerchant(apiKey: string) {
-  const exists = true;
-  const merchantId = "3435";
-  return { merchantId, exists };
+  let exists;
+  let merchantId;
+  let merchantWallet;
+
+  const merchantsRef = db.collection("merchants");
+
+  const snapshot = await merchantsRef.where("apiKey", "==", apiKey).get();
+  if (snapshot.empty) {
+    return { exists: false };
+  }
+
+  snapshot.forEach((doc) => {
+    merchantWallet = doc.data().merchantWallet;
+    merchantId = doc.id;
+  });
+
+  return { merchantId, exists, merchantWallet };
 }
 
 // TODO:
@@ -33,6 +47,7 @@ export async function createPaymentDetail(
   keyPair: KeyringPair,
   mnemonic: string,
   merchantId: string,
+  merchantWallet: string,
   body: PaymentRequest
 ) {
   let saved;
@@ -42,9 +57,10 @@ export async function createPaymentDetail(
 
   const doc = {
     merchantId,
+    merchantWallet,
     transactionId,
     mnemonic, //TODO: hide this in the database from client and encrypt
-    walletAddress: keyPair.address,
+    generatedWallet: keyPair.address,
     url,
     amount,
     successUrl,
@@ -73,4 +89,31 @@ export async function createPaymentDetail(
 // Deletes a payment doc from the database
 export async function deletePaymentDetail(transactionId: string) {
   return true;
+}
+
+export async function saveTx(
+  merchantId: string,
+  transactionId: string,
+  hash: string,
+  from: string,
+  to: string,
+  amount: any
+) {
+  const doc = {
+    hash,
+    from,
+    to,
+    amount,
+    createdAt: admin.firestore.Timestamp.now(),
+  };
+
+  await db
+    .collection("merchants")
+    .doc(merchantId)
+    .collection("transactions")
+    .doc(transactionId)
+    .set(doc)
+    .catch((error) => {
+      functions.logger.error(error);
+    });
 }

@@ -12,9 +12,10 @@ export interface PaymentResponse {
 
 export interface PaymentDoc {
   merchantId?: string;
+  merchantWallet?: string;
   transactionId?: string;
   mnemonic?: string; //TODO: hide this in the database from client and encrypt
-  walletAddress?: string;
+  generatedWallet?: string;
   url?: string;
   amount?: number;
   successUrl?: string;

@@ -8,12 +8,18 @@ export default functions.firestore
   .document("/paymentRequest/{documentId}")
   .onCreate(async (snap, context) => {
     const doc = snap.data() as PaymentDoc;
-    functions.logger.log("processing", context.params.documentId, doc);
     await checkTx(doc, paid, unpaid, underPaid, overPaid);
   });
 
 const paid = async (doc: PaymentDoc) => {
-  const { callbackUrl, mnemonic, walletAddress, amount, transactionId } = doc;
+  const {
+    callbackUrl,
+    mnemonic,
+    merchantWallet,
+    merchantId,
+    amount,
+    transactionId,
+  } = doc;
 
   const data = {
     event: "payment.paid.success",
@@ -23,9 +29,9 @@ const paid = async (doc: PaymentDoc) => {
 
   await callWebHook(callbackUrl!, data);
 
-  // TODO: Recursively call transfer to merchants address twice then call manual review
+  // TODO: If error recursively call transfer to merchants address twice then call manual review
   // TODO: Call manual review with doc details
-  sendTx(mnemonic!, walletAddress!, amount!)
+  await sendTx(merchantId!, transactionId!, mnemonic!, merchantWallet!, amount!)
     .catch(console.error)
     .finally(() => process.exit());
 };
@@ -59,7 +65,14 @@ const underPaid = async (doc: PaymentDoc) => {
 };
 
 const overPaid = async (doc: PaymentDoc) => {
-  const { callbackUrl, mnemonic, walletAddress, transactionId, amount } = doc;
+  const {
+    callbackUrl,
+    mnemonic,
+    merchantWallet,
+    merchantId,
+    transactionId,
+    amount,
+  } = doc;
 
   const data = {
     event: "payment.overpaid.success",
@@ -70,7 +83,7 @@ const overPaid = async (doc: PaymentDoc) => {
   await callWebHook(callbackUrl!, data);
 
   // TODO: recursively call transfer to merchants address
-  sendTx(mnemonic!, walletAddress!, amount!)
+  await sendTx(merchantId!, transactionId!, mnemonic!, merchantWallet!, amount!)
     .catch(console.error)
     .finally(() => process.exit());
 

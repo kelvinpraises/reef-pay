@@ -1,7 +1,7 @@
 import { ApiPromise, Keyring } from "@polkadot/api";
 import { WsProvider } from "@polkadot/rpc-provider";
 import { options } from "@reef-defi/api";
-import { checkUniqueMnemonic } from "./firebase";
+import { checkUniqueMnemonic, saveTx } from "./firebase";
 import { PaymentDoc } from "./types";
 import bip39 = require("bip39");
 import functions = require("firebase-functions");
@@ -31,16 +31,28 @@ export async function generateKeyPair() {
 
 // Sign and send a transfer
 export async function sendTx(
+  merchantId: string,
+  transactionId: string,
   mnemonic: string,
   address: string,
-  amount: number
+  amount: any
 ) {
   const provider = new WsProvider("wss://rpc-testnet.reefscan.com/ws");
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
   const keyring = new Keyring({ type: "sr25519" });
   const sender = keyring.addFromUri(mnemonic);
-  await api.tx.balances.transfer(address, amount).signAndSend(sender);
+  const hash = await api.tx.balances
+    .transfer(address, amount)
+    .signAndSend(sender);
+  await saveTx(
+    merchantId,
+    transactionId,
+    "" + hash,
+    sender.address,
+    address,
+    amount
+  );
 }
 
 // Subscribe to balance changes for our account
@@ -55,10 +67,10 @@ export async function checkTx(
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
 
-  const { walletAddress, amount } = doc;
+  const { generatedWallet, amount } = doc;
 
   const unsub = await api.query.system.account(
-    walletAddress!,
+    generatedWallet!,
     async ({
       data: { free: currentFree, reserved: currentReserved },
       nonce: currentNonce,
