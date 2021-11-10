@@ -1,14 +1,38 @@
 import * as functions from "firebase-functions";
+import { callWebHook, refund } from "../utility/payment";
 import { checkTx, sendTx } from "../utility/reef";
 import { PaymentDoc } from "../utility/types";
-import { callWebHook, refund } from "../utility/payment";
 
 // When a new payment request is made calls checkTx
 export default functions.firestore
   .document("/paymentRequest/{documentId}")
   .onCreate(async (snap, context) => {
     const doc = snap.data() as PaymentDoc;
-    await checkTx(doc, paid, unpaid, underPaid, overPaid);
+    const status = await checkTx(doc);
+
+    functions.logger.info("Transaction Status: " + status);
+
+    switch (status) {
+      case "paid":
+        await paid(doc);
+        break;
+
+      case "unpaid":
+        await unpaid(doc);
+        break;
+
+      case "overpaid":
+        await overPaid(doc);
+        break;
+
+      case "underpaid":
+        await underPaid(doc);
+        break;
+
+      default:
+        functions.logger.info("unhandled event");
+        break;
+    }
   });
 
 const paid = async (doc: PaymentDoc) => {
@@ -31,9 +55,15 @@ const paid = async (doc: PaymentDoc) => {
 
   // TODO: If error recursively call transfer to merchants address twice then call manual review
   // TODO: Call manual review with doc details
-  await sendTx(merchantId!, transactionId!, mnemonic!, merchantWallet!, amount!)
-    .catch(console.error)
-    .finally(() => process.exit());
+  await sendTx(
+    merchantId!,
+    transactionId!,
+    mnemonic!,
+    merchantWallet!,
+    amount!
+  ).catch((e) => {
+    functions.logger.error(e);
+  });
 };
 
 const unpaid = async (doc: PaymentDoc) => {
@@ -83,9 +113,15 @@ const overPaid = async (doc: PaymentDoc) => {
   await callWebHook(callbackUrl!, data);
 
   // TODO: recursively call transfer to merchants address
-  await sendTx(merchantId!, transactionId!, mnemonic!, merchantWallet!, amount!)
-    .catch(console.error)
-    .finally(() => process.exit());
+  await sendTx(
+    merchantId!,
+    transactionId!,
+    mnemonic!,
+    merchantWallet!,
+    amount!
+  ).catch((e) => {
+    functions.logger.error(e);
+  });
 
   const refundAddress = "";
   const refundAmount = "";

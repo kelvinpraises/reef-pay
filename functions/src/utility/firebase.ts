@@ -22,8 +22,11 @@ export async function getMerchant(apiKey: string) {
   }
 
   snapshot.forEach((doc) => {
-    merchantWallet = doc.data().merchantWallet;
     merchantId = doc.id;
+    merchantWallet = doc.data().merchantWallet;
+
+    functions.logger.debug(merchantId);
+    functions.logger.debug(merchantWallet);
   });
 
   return { merchantId, exists, merchantWallet };
@@ -50,7 +53,7 @@ export async function createPaymentDetail(
   merchantWallet: string,
   body: PaymentRequest
 ) {
-  let saved;
+  let saved = false;
   const { amount, successUrl, cancelUrl, callbackUrl } = body;
   const transactionId = uuidv1();
   const url = "https://reef-pay.web.app/pay/" + transactionId;

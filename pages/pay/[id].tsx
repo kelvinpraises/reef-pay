@@ -69,10 +69,10 @@ const PayTransactionId: NextPage = () => {
         (doc) => {
           if (doc.exists()) {
             setLoading(false);
-            const { walletAddress, amount, successUrl, cancelUrl, createdAt } =
+            const { generatedWallet, amount, successUrl, cancelUrl, createdAt } =
               doc.data();
 
-            setAddress(walletAddress);
+            setAddress(generatedWallet);
             setAmount(amount);
             setSuccessUrl(successUrl);
             setCancelUrl(cancelUrl);
@@ -125,7 +125,7 @@ const PayTransactionId: NextPage = () => {
           <SCard>
             <Label>This payment link expires in</Label>
             <Feild>
-              <CountDownTimer date={createdAt} />
+              <CountDownTimer date={createdAt} cancelUrl={cancelUrl} />
             </Feild>
             <br />
             <Label>Wallet address to transfer into</Label>

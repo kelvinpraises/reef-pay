@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-export default function CountDownTimer({ date }: { date: string }) {
+export default function CountDownTimer({
+  date,
+  cancelUrl,
+}: {
+  date: string;
+  cancelUrl: string;
+}) {
   const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
   const [end, setEnd] = useState("");
@@ -13,7 +19,7 @@ export default function CountDownTimer({ date }: { date: string }) {
 
   const timer = useCallback(() => {
     // The data/time to countdown to
-    var countDownDate = new Date(date).getTime() + 900000;
+    var countDownDate = new Date(date).getTime() + 300000;
 
     // Run myfunc every second
     var myfunc = setInterval(function () {
@@ -40,6 +46,11 @@ export default function CountDownTimer({ date }: { date: string }) {
         setMinutes("");
         setSeconds("");
         setEnd("TIME UP Redirecting....");
+
+        setTimeout(() => {
+          // redirect to the fail page
+          window.location.href = cancelUrl;
+        }, 100);
       }
     }, 1000);
   }, [date]);

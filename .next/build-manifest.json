@@ -5,16 +5,16 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/U69N8unZfsBc6KVzGqn9l/_buildManifest.js",
-    "static/U69N8unZfsBc6KVzGqn9l/_ssgManifest.js",
-    "static/U69N8unZfsBc6KVzGqn9l/_middlewareManifest.js"
+    "static/Wqoiy5nWOrk0XqQi3xfeK/_buildManifest.js",
+    "static/Wqoiy5nWOrk0XqQi3xfeK/_ssgManifest.js",
+    "static/Wqoiy5nWOrk0XqQi3xfeK/_middlewareManifest.js"
   ],
   "pages": {
     "/": [
       "static/chunks/webpack-9baefb654ac02b2b.js",
       "static/chunks/framework-91d7f78b5b4003c8.js",
       "static/chunks/main-c3229f9e3c3c6867.js",
-      "static/chunks/pages/index-1a635c8934120e5c.js"
+      "static/chunks/pages/index-78c8d865cf6d3280.js"
     ],
     "/_app": [
       "static/chunks/webpack-9baefb654ac02b2b.js",
@@ -50,13 +50,13 @@
       "static/chunks/webpack-9baefb654ac02b2b.js",
       "static/chunks/framework-91d7f78b5b4003c8.js",
       "static/chunks/main-c3229f9e3c3c6867.js",
-      "static/chunks/pages/pay/[id]-55f39d7659812562.js"
+      "static/chunks/pages/pay/[id]-5764a6f2ef3373b7.js"
     ],
     "/settings": [
       "static/chunks/webpack-9baefb654ac02b2b.js",
       "static/chunks/framework-91d7f78b5b4003c8.js",
       "static/chunks/main-c3229f9e3c3c6867.js",
-      "static/chunks/pages/settings-790e2698920e2387.js"
+      "static/chunks/pages/settings-22b7a77955b5800f.js"
     ],
     "/transactions": [
       "static/chunks/webpack-9baefb654ac02b2b.js",

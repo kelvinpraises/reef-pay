@@ -28,12 +28,16 @@ app.post("/payment-request", async (req, res) => {
   } else {
     const { exists, merchantId, merchantWallet } = await getMerchant(apiKey);
 
-    if (!exists) res.sendStatus(400);
+    if (exists == false) return res.sendStatus(400);
 
     const generated = await generateKeyPair();
     const { keyPair, mnemonic } = generated!;
 
+    functions.logger.error(1);
+
     const body = req.body as PaymentRequest;
+
+    functions.logger.error(2);
 
     const { saved, data } = await createPaymentDetail(
       keyPair,
@@ -43,9 +47,11 @@ app.post("/payment-request", async (req, res) => {
       body
     );
 
-    if (!saved) res.sendStatus(500);
+    functions.logger.error(3);
 
-    res.send({ data });
+    if (saved == false) return res.sendStatus(500);
+
+    return res.send({ data });
   }
 });
 

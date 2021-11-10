@@ -25,7 +25,7 @@ export interface PaymentDoc {
 }
 
 export interface WebHookData {
-  event: string;
   transactionId: string;
   amount: number;
+  event: string;
 }

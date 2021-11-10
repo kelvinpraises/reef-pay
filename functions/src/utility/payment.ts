@@ -6,12 +6,9 @@ export async function callWebHook(callbackUrl: string, data: WebHookData) {
   const { hostname, pathname } = new URL(callbackUrl);
 
   const postData = JSON.stringify({
-    data: {
-      id: transactionId,
-      amount,
-      created: Date.now(),
-    },
-    type: event,
+    event,
+    transactionId,
+    amount,
   });
 
   const options = {

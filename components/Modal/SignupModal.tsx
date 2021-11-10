@@ -111,7 +111,7 @@ export default function SignupModal({
           setDoc(
             userRef,
             {
-              walletAddress: wallet,
+              merchantWallet: wallet,
             },
             { merge: true }
           );

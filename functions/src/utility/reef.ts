@@ -56,50 +56,41 @@ export async function sendTx(
 }
 
 // Subscribe to balance changes for our account
-export async function checkTx(
-  doc: PaymentDoc,
-  paid: Function,
-  unpaid: Function,
-  underPaid: Function,
-  overPaid: Function
-) {
+export async function checkTx(doc: PaymentDoc) {
   const provider = new WsProvider("wss://rpc-testnet.reefscan.com/ws");
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
+
+  let status = "";
 
   const { generatedWallet, amount } = doc;
 
   const unsub = await api.query.system.account(
     generatedWallet!,
-    async ({
+    ({
       data: { free: currentFree, reserved: currentReserved },
       nonce: currentNonce,
     }) => {
-      const message = `balance: ${currentFree} reserved: ${currentReserved} nonce: ${currentNonce}`;
-      functions.logger.info(message); // TODO: Remove in Prod
-
       let currentBalance = currentFree as unknown as number;
       currentBalance = currentBalance / 1000000000000000000;
 
-      functions.logger.info(currentBalance); // TODO: Remove in Prod
-      functions.logger.info(amount); // TODO: Remove in Prod
-
       if (currentBalance == amount!) {
-        await paid(doc);
-        unsub();
+        status = "paid";
       } else if (currentBalance > amount!) {
-        await overPaid(doc);
-        unsub();
+        status = "overpaid";
       } else if (currentBalance > 0 && currentBalance < amount!) {
-        await underPaid(doc);
-        unsub();
+        status = "underpaid";
       }
     }
   );
 
-  // A 15 minute count down timer that calls unpaid
-  setTimeout(async () => {
-    await unpaid(doc);
+  // A 5 minute count down timer that calls unpaid
+  setTimeout(() => {
+    status = "unpaid";
+  }, 300000);
+
+  if (status.length > 0) {
     unsub();
-  }, 900000);
+    return status;
+  }
 }
