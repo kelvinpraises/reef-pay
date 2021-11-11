@@ -255,7 +255,7 @@ export default function Layout({ children }: { children: any }) {
             setName={setName}
             active={setActive("API Doc")}
             route="/documentation"
-            name="API Doc"
+            name="API Docs"
             icon="document"
           />
         </div>

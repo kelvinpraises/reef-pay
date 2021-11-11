@@ -8,6 +8,7 @@ import LoginModal from "../components/Modal/LoginModal";
 import SignupModal from "../components/Modal/SignupModal";
 import app from "../firebase/clientApp";
 import Router from "next/router";
+import Link from "next/link";
 
 const SHome = styled.div`
   display: flex;
@@ -87,7 +88,11 @@ const Home: NextPage = () => {
             />
           </SButtons>
           <SText>
-            Welcome to Reef Pay create an account or login to accept payments
+            Welcome to Reef Pay create an account or login to accept payments,
+            or read the
+            <Link href="/documentation" passHref={true}>
+              <a> docs</a>
+            </Link>
           </SText>
         </SHome>
       </div>
