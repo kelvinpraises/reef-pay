@@ -102,20 +102,47 @@ export default function ApiDocumentation() {
         </SContent>
         <SText>
           The response JSON object contains an event feild which could be a list
-          of four possible transaction states, a &quot;payment.paid.success&quot; is sent
-          out when the payer pays the exact reef tokens specified in the payment
-          request, a &quot;payment.overpaid.success&quot; is sent when a payer sends in
+          of four possible transaction states, a
+          &quot;payment.paid.success&quot; is sent out when the payer pays the
+          exact reef tokens specified in the payment request, a
+          &quot;payment.overpaid.success&quot; is sent when a payer sends in
           excess reef tokens the balance is refunded with service fees, a
-          &quot;payment.unpaid.failed&quot; is sent when a user fails to pay, and a
-          &quot;payment.underpaid.failed&quot; is sent when the user makes a lower than
-          expected payment with the money refunded with service fee.
-          transactionId feild feild is used to identify the payment and an
+          &quot;payment.unpaid.failed&quot; is sent when a user fails to pay,
+          and a &quot;payment.underpaid.failed&quot; is sent when the user makes
+          a lower than expected payment with the money refunded with service
+          fee. transactionId feild feild is used to identify the payment and an
           amount feild specifies the reef the API handled
         </SText>
         <SContent>
           <SImg src="/assets/webhook response.png" alt="" />
           <SImgText>A Webhook Call Interface</SImgText>
         </SContent>
+      </SContainer>
+
+      <SContainer>
+        <SHeader>Interactive Reef Pay Shop Example</SHeader>
+        <SText>
+          you can check out{" "}
+          <a
+            href="https://reef-pay-shop.web.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Reef Pay Shop
+          </a>{" "}
+          to view an app using the api
+        </SText>
+        <SText>
+          Link to the repo{" "}
+          <a
+            href="https://github.com/kelvinpraises/ref-pay-shop"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            on Github
+          </a>
+        </SText>
+        <SText></SText>
       </SContainer>
     </SDocumentation>
   );
