@@ -40,7 +40,7 @@ export default function CountDownTimer({
         setSeconds(seconds + " seconds");
       }
 
-      if (!minutes && seconds) {
+      if (minutes < 1 && seconds) {
         setSeconds(seconds + " seconds");
       }
 
