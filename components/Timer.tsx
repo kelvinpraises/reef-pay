@@ -40,6 +40,10 @@ export default function CountDownTimer({
         setSeconds(seconds + " seconds");
       }
 
+      if (!minutes && seconds) {
+        setSeconds(seconds + " seconds");
+      }
+
       // Display the message when countdown is over
       if (timeleft < 0) {
         clearInterval(myfunc);
