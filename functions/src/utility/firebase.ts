@@ -4,6 +4,8 @@ import { PaymentRequest, PaymentResponse } from "./types";
 import admin = require("firebase-admin");
 import functions = require("firebase-functions");
 
+process.env.FIRESTORE_EMULATOR_HOST = "localhost:8086";
+
 admin.initializeApp();
 
 const db = admin.firestore();

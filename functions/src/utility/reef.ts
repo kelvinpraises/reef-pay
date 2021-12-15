@@ -71,14 +71,14 @@ export async function checkTx(doc: PaymentDoc) {
       currentBalance = currentBalance / 1000000000000000000;
 
       if (currentBalance == amount!) {
+        unsub();
         await paid(doc);
-        unsub();
       } else if (currentBalance > amount!) {
+        unsub();
         await overPaid(doc);
-        unsub();
       } else if (currentBalance > 0 && currentBalance < amount!) {
-        await underPaid(doc);
         unsub();
+        await underPaid(doc);
       }
     }
   );
