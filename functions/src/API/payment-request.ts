@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 import { createPaymentDetail, getMerchant } from "../utility/firebase";
 import { handleError } from "../utility/middleware";
 import { generateKeyPair } from "../utility/reef";
-import { PaymentRequest } from "../utility/types";
+import { CheckoutData, PaymentRequest } from "../utility/types";
 
 // TODO: Uncomment to use cache, and hashed API key and encrypted mnemonics in prod.
 // import { hashAPIKey } from "./utils/crypto";
@@ -33,11 +33,7 @@ app.post("/payment-request", async (req, res) => {
     const generated = await generateKeyPair();
     const { keyPair, mnemonic } = generated!;
 
-    functions.logger.error(1);
-
     const body = req.body as PaymentRequest;
-
-    functions.logger.error(2);
 
     const { saved, data } = await createPaymentDetail(
       keyPair,
@@ -46,8 +42,6 @@ app.post("/payment-request", async (req, res) => {
       merchantWallet!,
       body
     );
-
-    functions.logger.error(3);
 
     if (saved == false) return res.sendStatus(500);
 

@@ -62,7 +62,7 @@ export default function ApiDocumentation() {
         </SContent>
         <SText>
           The payment request object sent to the API should contain four
-          mandatory feilds. The amount feild is the price to charge the payer in
+          mandatory fields. The amount field is the price to charge the payer in
           reef, successUrl is the page a payer is redirect to after a
           successfull payment is made and cancelUrl is the page to redirect to
           when a payer has not made a complete payment, the callbackUrl is the
@@ -77,10 +77,10 @@ export default function ApiDocumentation() {
       <SContainer>
         <SHeader>Handle a payment request response</SHeader>
         <SText>
-          A successful Payment Request response is sent back in JSON with feilds
+          A successful Payment Request response is sent back in JSON with fields
           of url which is the payment url to redirect the user to, and a
-          transactionId feild which is the id of the payment request to track.
-          the url feild is time sensitve and becomes invalid after 5 minutes
+          transactionId field which is the id of the payment request to track.
+          the url field is time sensitve and becomes invalid after 5 minutes
           with webhook call event of a payment failed type.
         </SText>
         <SContent>
@@ -101,7 +101,7 @@ export default function ApiDocumentation() {
           <SImgText>Example Express App Receiving a Webhook</SImgText>
         </SContent>
         <SText>
-          The response JSON object contains an event feild which could be a list
+          The response JSON object contains an event field which could be a list
           of four possible transaction states, a
           &quot;payment.paid.success&quot; is sent out when the payer pays the
           exact reef tokens specified in the payment request, a
@@ -110,8 +110,8 @@ export default function ApiDocumentation() {
           &quot;payment.unpaid.failed&quot; is sent when a user fails to pay,
           and a &quot;payment.underpaid.failed&quot; is sent when the user makes
           a lower than expected payment with the money refunded with service
-          fee. transactionId feild feild is used to identify the payment and an
-          amount feild specifies the reef the API handled
+          fee. transactionId field field is used to identify the payment and an
+          amount field specifies the reef the API handled
         </SText>
         <SContent>
           <SImg src="/assets/webhook response.png" alt="" />

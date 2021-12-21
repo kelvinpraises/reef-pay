@@ -29,3 +29,11 @@ export interface WebHookData {
   amount: number;
   event: string;
 }
+
+export interface CheckoutData {
+  apiKey: string;
+  checkoutType: string;
+  checkoutId: string;
+  itemId: string;
+  buyerId?: string;
+}

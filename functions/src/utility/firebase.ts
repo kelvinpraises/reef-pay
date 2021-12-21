@@ -26,9 +26,6 @@ export async function getMerchant(apiKey: string) {
   snapshot.forEach((doc) => {
     merchantId = doc.id;
     merchantWallet = doc.data().merchantWallet;
-
-    functions.logger.debug(merchantId);
-    functions.logger.debug(merchantWallet);
   });
 
   return { merchantId, exists, merchantWallet };
