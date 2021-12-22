@@ -1,6 +1,11 @@
 import { KeyringPair } from "@polkadot/keyring/types";
 import { v1 as uuidv1 } from "uuid";
-import { PaymentRequest, PaymentResponse } from "./types";
+import {
+  CheckoutRequest,
+  CheckoutResponse,
+  PaymentRequest,
+  PaymentResponse,
+} from "./types";
 import admin = require("firebase-admin");
 import functions = require("firebase-functions");
 
@@ -12,7 +17,6 @@ const db = admin.firestore();
 
 // Checks database to see if the merchant exists
 export async function getMerchant(apiKey: string) {
-  let exists;
   let merchantId;
   let merchantWallet;
 
@@ -28,7 +32,35 @@ export async function getMerchant(apiKey: string) {
     merchantWallet = doc.data().merchantWallet;
   });
 
-  return { merchantId, exists, merchantWallet };
+  return { merchantId, exists: true, merchantWallet };
+}
+
+// Checks the database for the amount associated with an itemId
+export async function getItemCheckoutAmount(
+  merchantId: string,
+  body: CheckoutRequest
+) {
+  let amount;
+
+  const { checkoutType, checkoutId, itemId, buyerId } = body;
+
+  const amountRef = db
+    .collection("merchants")
+    .doc(merchantId)
+    .collection("checkout")
+    .doc(checkoutType)
+    .collection(checkoutId)
+    .doc(itemId);
+
+  const doc = await amountRef.get();
+
+  if (!doc.exists) {
+    return { exists: false };
+  }
+
+  amount = doc.data()!.amount;
+
+  return { amount, exists: true };
 }
 
 // TODO:
@@ -84,6 +116,43 @@ export async function createPaymentDetail(
     });
 
   const data: PaymentResponse = { url, transactionId };
+  return { saved, data };
+}
+
+export async function createCheckoutDetail(
+  keyPair: KeyringPair,
+  mnemonic: string,
+  merchantId: string,
+  merchantWallet: string,
+  amount: string,) {
+  let saved = false;
+  const transactionId = uuidv1();
+  const url = "https://reef-pay.web.app/checkout-pay/" + transactionId;
+
+  const doc = {
+    merchantId,
+    merchantWallet,
+    transactionId,
+    mnemonic, //TODO: hide this in the database from client and encrypt
+    generatedWallet: keyPair.address,
+    url,
+    amount,
+    createdAt: admin.firestore.Timestamp.now(),
+  };
+
+  await db
+    .collection("checkoutRequest")
+    .doc(transactionId)
+    .set(doc)
+    .then(() => {
+      saved = true;
+    })
+    .catch((error) => {
+      saved = false;
+      functions.logger.error(error);
+    });
+
+  const data: CheckoutResponse = { url };
   return { saved, data };
 }
 

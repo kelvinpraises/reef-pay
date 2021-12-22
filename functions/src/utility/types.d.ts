@@ -5,9 +5,20 @@ export interface PaymentRequest {
   callbackUrl: string;
 }
 
+export interface CheckoutRequest {
+  checkoutType: string;
+  checkoutId: string;
+  itemId: string;
+  buyerId?: string;
+}
+
 export interface PaymentResponse {
   url: string;
   transactionId: string;
+}
+
+export interface CheckoutResponse {
+  url: string;
 }
 
 export interface PaymentDoc {
@@ -28,12 +39,4 @@ export interface WebHookData {
   transactionId: string;
   amount: number;
   event: string;
-}
-
-export interface CheckoutData {
-  apiKey: string;
-  checkoutType: string;
-  checkoutId: string;
-  itemId: string;
-  buyerId?: string;
 }

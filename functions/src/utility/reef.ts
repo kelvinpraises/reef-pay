@@ -58,6 +58,7 @@ export async function sendTx(
 
 // Subscribe to balance changes for our account
 export async function checkTx(doc: PaymentDoc) {
+  let isPaid = false;
   const provider = new WsProvider("wss://rpc-testnet.reefscan.com/ws");
   const api = new ApiPromise(options({ provider }));
   await api.isReady;
@@ -70,22 +71,29 @@ export async function checkTx(doc: PaymentDoc) {
       let currentBalance = currentFree as unknown as number;
       currentBalance = currentBalance / 1000000000000000000;
 
+      // A 5 minute count down timer that calls unpaid
+      setTimeout(async () => {
+        if (isPaid === false) {
+          await unpaid(doc);
+          unsub();
+        }
+      }, 300000);
+
       if (currentBalance == amount!) {
-        unsub();
+        isPaid = true
         await paid(doc);
+        unsub();
       } else if (currentBalance > amount!) {
-        unsub();
+        isPaid = true
         await overPaid(doc);
-      } else if (currentBalance > 0 && currentBalance < amount!) {
         unsub();
+      } else if (currentBalance > 0 && currentBalance < amount!) {
+        isPaid = true
         await underPaid(doc);
+        unsub();
       }
+      
+      process.kill(process.pid, "SIGTERM");
     }
   );
-
-  // A 5 minute count down timer that calls unpaid
-  setTimeout(async () => {
-    await unpaid(doc);
-    unsub();
-  }, 300000);
 }

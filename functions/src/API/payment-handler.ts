@@ -4,8 +4,16 @@ import { checkTx, sendTx } from "../utility/reef";
 import { PaymentDoc } from "../utility/types";
 
 // When a new payment request is made calls checkTx
-export default functions.firestore
+export const paymentHandler = functions.firestore
   .document("/paymentRequest/{documentId}")
+  .onCreate(async (snap, context) => {
+    const doc = snap.data() as PaymentDoc;
+    await checkTx(doc);
+  });
+
+// When a new checkout request is made calls checkTx
+export const checkoutHandler = functions.firestore
+  .document("/checkoutRequest/{documentId}")
   .onCreate(async (snap, context) => {
     const doc = snap.data() as PaymentDoc;
     await checkTx(doc);

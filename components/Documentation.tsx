@@ -110,7 +110,7 @@ export default function ApiDocumentation() {
           &quot;payment.unpaid.failed&quot; is sent when a user fails to pay,
           and a &quot;payment.underpaid.failed&quot; is sent when the user makes
           a lower than expected payment with the money refunded with service
-          fee. transactionId field field is used to identify the payment and an
+          fee. transactionId field field is used to identify the payment and the
           amount field specifies the reef the API handled
         </SText>
         <SContent>
