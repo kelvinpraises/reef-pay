@@ -8,14 +8,13 @@ import app from "../firebase/clientApp";
 import Router from "next/router";
 
 const date = new Date();
-// const transactions = Array<ITransaction>(10).fill({
-//   id: "Hse98eudolms",
-//   amount: "50000",
-//   amountInBtc: "0.206732",
-//   status: "pending",
-//   type: "deposit",
-//   createdAt: date.toLocaleDateString(),
-// });
+const transactions = Array<ITransaction>(10).fill({
+  id: "Hse98eudolms",
+  amount: "50000",
+  status: "pending",
+  createdAt: date.toLocaleDateString(),
+});
+
 const Transactions: NextPage = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -52,7 +51,7 @@ const Transactions: NextPage = () => {
           />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <TransactionsData transactions={[]} />
+        <TransactionsData transactions={transactions} />
       </div>
     );
   }

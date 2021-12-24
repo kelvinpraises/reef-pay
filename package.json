@@ -1,4 +1,5 @@
 {
+  "license": "MIT",
   "name": "reef-admin",
   "private": true,
   "scripts": {
@@ -10,7 +11,7 @@
     "out": "yarn build && yarn export"
   },
   "dependencies": {
-    "firebase": "^9.3.0",
+    "firebase": "^9.6.1",
     "next": "12.0.2",
     "next-firebase-hosting-rewrites": "^0.0.9",
     "react": "17.0.2",

@@ -183,10 +183,13 @@ export default function Layout({ children }: { children: any }) {
         setName("Settings");
         break;
       case "documentation":
-        setName("API Doc");
+        setName("API Docs");
         break;
       case "pay":
         setName("Payment Request");
+        break;
+      case "checkout":
+        setName("Checkout");
         break;
 
       default:
@@ -238,6 +241,13 @@ export default function Layout({ children }: { children: any }) {
           />
           <NavItem
             setName={setName}
+            active={setActive("Checkout")}
+            route="/checkout"
+            name="Checkout"
+            icon="checkout"
+          />
+          <NavItem
+            setName={setName}
             active={setActive("Transactions")}
             route="/transactions"
             name="Transactions"
@@ -253,7 +263,7 @@ export default function Layout({ children }: { children: any }) {
           <div style={{ flexGrow: 1 }}></div>
           <NavItem
             setName={setName}
-            active={setActive("API Doc")}
+            active={setActive("API Docs")}
             route="/documentation"
             name="API Docs"
             icon="document"

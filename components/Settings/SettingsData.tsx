@@ -142,6 +142,7 @@ export default function SettingsData() {
         <div style={{ display: "flex" }}>
           <SInput
             type="text"
+            autoComplete="falsebbbb"
             name="address"
             value={address}
             onChange={(e) => handleChange(e)}
@@ -159,6 +160,7 @@ export default function SettingsData() {
               type={show ? "text" : "password"}
               name="apiKey"
               value={apiKey}
+              autoComplete="new-password"
             />
             <SToggle>
               <img

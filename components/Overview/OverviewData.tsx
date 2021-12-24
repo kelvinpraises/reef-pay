@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 const SOverviewData = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-content: center;
   justify-content: center;
   text-align: center;
   gap: 2em;
+  row-gap: 4.5em;
   margin: 2em;
   margin-bottom: 2em;
   max-width: 100%;

@@ -1,21 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 
 export default function CountDownTimer({
+  checkout,
   date,
   cancelUrl,
 }: {
+  checkout?: boolean;
   date: string;
-  cancelUrl: string;
+  cancelUrl?: string;
 }) {
   const [minutes, setMinutes] = useState("");
   const [seconds, setSeconds] = useState("");
   const [end, setEnd] = useState("");
 
-  //   alert(date);
 
-  useEffect(() => {
-    timer();
-  }, [date]);
 
   const timer = useCallback(() => {
     // The data/time to countdown to
@@ -51,13 +49,21 @@ export default function CountDownTimer({
         setSeconds("");
         setEnd("TIME UP Redirecting....");
 
-        setTimeout(() => {
-          // redirect to the fail page
-          window.location.href = cancelUrl;
-        }, 100);
+        if (checkout) {
+          // TODO: Communicate with the window api or...
+        } else {
+          setTimeout(() => {
+            // redirect to the fail page
+            if (cancelUrl) window.location.href = cancelUrl;
+          }, 100);
+        }
       }
     }, 1000);
-  }, [date]);
+  }, [date, cancelUrl, checkout]);
+
+  useEffect(() => {
+    timer();
+  }, [date, timer]);
 
   if (date?.length < 1) {
     return null;

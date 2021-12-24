@@ -8,7 +8,7 @@ export interface ITransactionsData {
 }
 
 const STransactionsData = styled.section`
-  padding: 1em;
+  padding: 3em;
 `;
 
 const SBox = styled.div`

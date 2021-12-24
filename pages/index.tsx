@@ -1,14 +1,14 @@
 import { Auth, getAuth, onAuthStateChanged } from "firebase/auth";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import LoginModal from "../components/Modal/LoginModal";
 import SignupModal from "../components/Modal/SignupModal";
 import app from "../firebase/clientApp";
-import Router from "next/router";
-import Link from "next/link";
 
 const SHome = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
           <img src="assets/reef-pay-big.png" alt="" />
           <SButtons>
             <Button
-              text="Create Account"
+              text="Create&nbsp;Account"
               click={() => {
                 setShowSignup(!showSignup);
               }}

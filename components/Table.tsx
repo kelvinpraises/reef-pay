@@ -2,6 +2,7 @@ import React, { ReactChild, ReactFragment, ReactPortal, useMemo } from "react";
 import styled from "styled-components";
 import { darkBlue } from "../constant/colors";
 import { IProps } from "../models/default_props";
+import Link from "next/link";
 
 export interface ITableCell<T> {
   data: T;
@@ -12,6 +13,7 @@ export type ITableRow<T> = Map<string, ITableCell<T>>;
 
 export interface ITableProps<T> extends IProps {
   data: ITableRow<T>;
+  url?: string;
 }
 
 const STable = styled.table`
@@ -19,6 +21,7 @@ const STable = styled.table`
   font-size: 1rem;
   min-width: 400px;
   margin: auto;
+  width: 100%;
 
   tbody tr {
     color: white;
@@ -62,11 +65,11 @@ const STable = styled.table`
   }
 `;
 
-export function Table<T>({ data }: ITableProps<T>) {
-  const [headers, rows, user] = useMemo(() => {
+export function Table<T>({ data, url }: ITableProps<T>) {
+  const [headers, rows, id] = useMemo(() => {
     const headers: Array<string> = [];
     const rows: Array<any> = [];
-    let user: any;
+    const id: Array<any> = [];
 
     const keys = data.keys();
 
@@ -82,7 +85,7 @@ export function Table<T>({ data }: ITableProps<T>) {
       if (row) rows.push(row.elements);
       if (row) {
         const data: any = row.data;
-        user = data.user;
+        if (data["id"]) id.push(data["id"]);
       }
 
       if (headers.length === 0) {
@@ -92,7 +95,7 @@ export function Table<T>({ data }: ITableProps<T>) {
       }
     }
 
-    return [headers, rows, user];
+    return [headers, rows, id];
   }, [data]);
 
   return (
@@ -108,24 +111,47 @@ export function Table<T>({ data }: ITableProps<T>) {
 
         <tbody>
           {rows.map((row, rowIndex) => {
-            return (
-              <tr key={rowIndex}>
-                {row.map(
-                  (
-                    cell:
-                      | boolean
-                      | ReactChild
-                      | ReactFragment
-                      | ReactPortal
-                      | null
-                      | undefined,
-                    cellIndex: number
-                  ) => {
-                    return <td key={cellIndex + rowIndex}>{cell}</td>;
-                  }
-                )}
-              </tr>
-            );
+            if (!url) {
+              return (
+                <tr key={rowIndex}>
+                  {row.map(
+                    (
+                      cell:
+                        | boolean
+                        | ReactChild
+                        | ReactFragment
+                        | ReactPortal
+                        | null
+                        | undefined,
+                      cellIndex: number
+                    ) => (
+                      <td key={cellIndex + rowIndex}>{cell}</td>
+                    )
+                  )}
+                </tr>
+              );
+            } else {
+              return (
+                <Link passHref={true} href={url + id[rowIndex]}>
+                  <tr key={rowIndex}>
+                    {row.map(
+                      (
+                        cell:
+                          | boolean
+                          | ReactChild
+                          | ReactFragment
+                          | ReactPortal
+                          | null
+                          | undefined,
+                        cellIndex: number
+                      ) => (
+                        <td key={cellIndex + rowIndex}>{cell}</td>
+                      )
+                    )}
+                  </tr>
+                </Link>
+              );
+            }
           })}
         </tbody>
       </STable>

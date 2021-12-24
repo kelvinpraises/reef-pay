@@ -10,9 +10,9 @@ The repo to this projec is at [https://github.com/kelvinpraises/ref-pay-shop](ht
 
 ## Reef Pay Project
 
-To view this project open [ https://reef-pay.web.app](https://reef-pay.web.app) with your browser to see the result.
+To view this project open [ https://www.reefpay.io](https://www.reefpay.io) with your browser.
 
-or run the development server:
+or run a local development server:
 
 ```bash
 npm run dev
