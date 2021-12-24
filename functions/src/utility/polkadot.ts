@@ -17,8 +17,6 @@ export async function generateKeyPair() {
   const keyring = new Keyring();
   const keyPair = keyring.addFromUri(mnemonic);
 
-  console.log(mnemonic);
-
   // TODO: Hash the mnemonic string and check for the hash hereR
   // Ensures key pair is unique in Database
   const isNew = await checkUniqueMnemonic(mnemonic);
@@ -76,24 +74,23 @@ export async function checkTx(doc: PaymentDoc) {
         if (isPaid === false) {
           await unpaid(doc);
           unsub();
+          process.kill(process.pid, "SIGTERM");
         }
       }, 300000);
 
       if (currentBalance == amount!) {
-        isPaid = true
+        isPaid = true;
         await paid(doc);
         unsub();
       } else if (currentBalance > amount!) {
-        isPaid = true
+        isPaid = true;
         await overPaid(doc);
         unsub();
       } else if (currentBalance > 0 && currentBalance < amount!) {
-        isPaid = true
+        isPaid = true;
         await underPaid(doc);
         unsub();
       }
-      
-      process.kill(process.pid, "SIGTERM");
     }
   );
 }

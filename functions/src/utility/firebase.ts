@@ -9,7 +9,7 @@ import {
 import admin = require("firebase-admin");
 import functions = require("firebase-functions");
 
-process.env.FIRESTORE_EMULATOR_HOST = "localhost:8086";
+// process.env.FIRESTORE_EMULATOR_HOST = "localhost:8086";
 
 admin.initializeApp();
 

@@ -1,6 +1,7 @@
 import { paymentHandler, checkoutHandler } from "./API/payment-handler";
 import PaymentRequest from "./API/payment-request";
 import oncreate from "./merchant/oncreate";
+import addCheckoutItem from "./merchant/addCheckoutItem";
 import generateAPIKey from "./merchant/reGenerateApiKey";
 import saveWalletAddress from "./merchant/saveWalletAddress";
 
@@ -12,3 +13,4 @@ exports.checkoutHandler = checkoutHandler;
 exports.saveWalletAddress = saveWalletAddress;
 exports.generateAPIKey = generateAPIKey;
 exports.oncreate = oncreate;
+exports.addCheckoutItem = addCheckoutItem;

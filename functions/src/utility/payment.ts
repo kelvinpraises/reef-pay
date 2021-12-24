@@ -1,4 +1,3 @@
-import * as functions from "firebase-functions";
 import * as https from "https";
 import { WebHookData } from "./types";
 

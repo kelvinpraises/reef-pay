@@ -8,7 +8,7 @@ import {
   getMerchant,
 } from "../utility/firebase";
 import { handleError } from "../utility/middleware";
-import { generateKeyPair } from "../utility/reef";
+import { generateKeyPair } from "../utility/polkadot";
 import { CheckoutRequest, PaymentRequest } from "../utility/types";
 
 // TODO: Uncomment to use cache, and hashed API key and encrypted mnemonics in prod.

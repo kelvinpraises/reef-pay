@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import { callWebHook, refund } from "../utility/payment";
-import { checkTx, sendTx } from "../utility/reef";
+import { checkTx, sendTx } from "../utility/polkadot";
 import { PaymentDoc } from "../utility/types";
 
 // When a new payment request is made calls checkTx
