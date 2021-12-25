@@ -11,13 +11,6 @@ const SCheckoutData = styled.section`
   padding: 3em;
 `;
 
-const SBox = styled.div`
-  height: calc(100vh - 100px - 4.6rem);
-  max-height: 400px;
-  display: grid;
-  place-items: center;
-`;
-
 export default function CheckoutData({ shops }: ICheckoutData) {
   const { tableRows } = useMemo(() => {
     const _shops: any = shops.map(({ items, id, createdAt }) => ({

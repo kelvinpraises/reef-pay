@@ -1,5 +1,4 @@
 import React from "react";
-// import { RiCloseLine } from "react-icons/ri";
 import styled from "styled-components";
 import { almostBlack } from "../../constant/colors";
 

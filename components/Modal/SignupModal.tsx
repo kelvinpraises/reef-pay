@@ -2,15 +2,15 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   getAuth,
-  updateProfile,
+  updateProfile
 } from "firebase/auth";
+import { doc, Firestore, getFirestore, setDoc } from "firebase/firestore";
 import React, { useCallback, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { almostBlack, darkBlue } from "../../constant/colors";
 import app from "../../firebase/clientApp";
 import Button from "../Button";
 import BaseModal from "./BaseModal";
-import { doc, Firestore, getFirestore, setDoc } from "firebase/firestore";
 
 const spin = keyframes`
   0% { transform: rotate(0deg); }
@@ -25,15 +25,6 @@ const SSignupModal = styled.div`
   padding: 35px;
   background-color: ${darkBlue};
   border-radius: 25px;
-`;
-
-const SLoader = styled.div`
-  border: 5px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 5px solid ${almostBlack};
-  min-width: 30px;
-  min-height: 30px;
-  animation: ${spin} 2s linear infinite;
 `;
 
 const SInput = styled.input`
@@ -72,7 +63,6 @@ export default function SignupModal({
     const auth = getAuth(app);
     auth && setAuth(auth);
   }, []);
-
 
   useEffect(() => {
     const db = getFirestore(app);
@@ -169,8 +159,4 @@ export default function SignupModal({
       </SSignupModal>
     </BaseModal>
   );
-}
-
-{
-  /* <SLoader style={{ display: loading ? "block" : "none" }} /> */
 }

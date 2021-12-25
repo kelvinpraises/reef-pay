@@ -1,8 +1,7 @@
 import {
   Auth,
   getAuth,
-  signInWithEmailAndPassword,
-  connectAuthEmulator,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import React, { useCallback, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";

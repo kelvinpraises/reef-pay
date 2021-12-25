@@ -36,7 +36,7 @@ const SText = styled.div`
   color: white;
   margin-bottom: 1em;
   font-size: 20px;
-  line-height: 1.4em;
+  line-height: 1.7;
 `;
 
 const SContent = styled.div`
@@ -64,8 +64,8 @@ const CheckoutIntegration: NextPage = () => {
           <SText>
             Checkout enable merchants to quicky accept payments in reef without
             the need for an intermediary server, while Quickshops is a service
-            under Checkout that groups items with fixed prices that don't change
-            often under a shop. You can create as much shops for as much
+            under Checkout that groups items with fixed prices that don&apos;t
+            change often under a shop. You can create as much shops for as much
             services you need to charge in reef.
           </SText>
         </SContainer>
@@ -90,18 +90,76 @@ const CheckoutIntegration: NextPage = () => {
 
         <SContainer>
           <SHeader>Integrate the SDK in your website</SHeader>
-          <SText>1. Copy shop configuration from checkout shop.</SText>
+          <SText>
+            1. Copy the shops configuration from checkout by clicking &quot;Shop
+            Config&quot; button.
+          </SText>
+          <SContent>
+            <SImg src="/assets/example config.png" alt="" />
+            <SImgText>An Example Quickshop Config</SImgText>
+          </SContent>
           <SText>
             2. Add the JavaScript SDK CDN link as the first script tag to your
-            website.
+            website.{" "}
+            <span style={{ color: "goldenrod" }}>
+              https://cdn.jsdelivr.net/gh/kelvinpraises/reef-pay-checkout-sdk@main/dist/bundle.js
+            </span>
           </SText>
-          <SText style={{ color: "goldenrod" }}>
-            https://cdn.jsdelivr.net/gh/kelvinpraises/reef-pay-checkout-sdk@9ff15f0d9117a8935e66947321fed5111c4e7df1/dist/bundle.js
-          </SText>
+
           <SContent>
             <SImg src="/assets/sdk.png" alt="" />
             <SImgText>Example Code Snippet Using SDK</SImgText>
           </SContent>
+          <SText>
+            3. Pass the configuration copied in{" "}
+            <span style={{ fontWeight: "bold" }}>Step 1</span> to the SDK{" "}
+            <span style={{ fontWeight: "bold", color: "goldenrod" }}>
+              initializeShop
+            </span>{" "}
+            function to initialize the shop. The{" "}
+            <span style={{ fontWeight: "bold", color: "goldenrod" }}>
+              initializeShop
+            </span>{" "}
+            function returns a{" "}
+            <span style={{ fontWeight: "bold", color: "goldenrod" }}>
+              Checkout
+            </span>{" "}
+            function which accepts an{" "}
+            <span style={{ fontWeight: "bold" }}>itemId</span> parameter.
+          </SText>
+          <SContent>
+            <SImg src="/assets/initialize shop.png" alt="" />
+            <SImgText>Initialize SDK to get Checkout Function</SImgText>
+          </SContent>
+          <SText>
+            4. Call the{" "}
+            <span style={{ fontWeight: "bold", color: "goldenrod" }}>
+              Checkout
+            </span>{" "}
+            function with the <span style={{ fontWeight: "bold" }}>itemId</span>{" "}
+            in an onclick event. The{" "}
+            <span style={{ fontWeight: "bold" }}>itemId</span> parameter to be
+            passed is the name of any item in a shop the config got copied from
+          </SText>
+          <SContent>
+            <SImg src="/assets/checkout.png" alt="" />
+            <SImgText>Call Checkout To Initialize Payments</SImgText>
+          </SContent>
+          <SText>
+            5. The{" "}
+            <span style={{ fontWeight: "bold", color: "goldenrod" }}>
+              Checkout
+            </span>{" "}
+            function call opens a{" "}
+            <a
+              href="https://www.reefpay.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              reefpay.io
+            </a>{" "}
+            payment link for the shop&apos;s item
+          </SText>
         </SContainer>
       </SDocumentation>
     </div>

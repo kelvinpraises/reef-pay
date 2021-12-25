@@ -2,7 +2,7 @@ import { Auth, getAuth } from "firebase/auth";
 import { Firestore, getFirestore } from "firebase/firestore";
 import { Functions, getFunctions, httpsCallable } from "firebase/functions";
 import React, { useCallback, useEffect, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { almostBlack, darkBlue } from "../../constant/colors";
 import app from "../../firebase/clientApp";
 import Button from "../Button";

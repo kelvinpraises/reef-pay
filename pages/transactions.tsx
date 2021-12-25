@@ -51,7 +51,7 @@ const Transactions: NextPage = () => {
           />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <TransactionsData transactions={transactions} />
+        <TransactionsData transactions={[]} />
       </div>
     );
   }

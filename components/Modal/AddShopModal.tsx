@@ -4,18 +4,6 @@ import { almostBlack, darkBlue } from "../../constant/colors";
 import LinkedButton from "../LinkButton";
 import BaseModal from "./BaseModal";
 
-const Panel = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0.5em 1em;
-  padding: 1.7em;
-  border-radius: 7.8px;
-  background-color: ${darkBlue};
-  font-size: 1.3em;
-`;
-
 const SSignupModal = styled.div`
   display: flex;
   flex-direction: column;
@@ -40,11 +28,6 @@ const SInput = styled.input`
 
 const Label = styled.label`
   font-size: 24px;
-  color: white;
-`;
-
-const SLink = styled.a`
-  text-decoration: none;
   color: white;
 `;
 
